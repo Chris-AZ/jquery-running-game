@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>game test page</title>
+  </head>
+  <script src="jquery-3.1.1.min.js"></script>
+  <style>
+    .game{
+      width: 300px;
+      height: 500px;
+      position: relative;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #6e6e6e;
+      user-select: none;
+      overflow: hidden;
+    }
+    .bg{
+      width: 2400px;
+      height: 500px;
+      display: block;
+      position: relative;
+    }
+    .bgbase{
+      width: 2400px;
+      height: 500px;
+      display:block;
+      left: 0px;
+      position:absolute;
+    }
+    .caractor{
+      width: 246px;
+      height: 253px;
+      display:block;
+      position: absolute;
+      left:5%;
+      top:29%;
+      z-index: 10;
+    }
+    .win , .lose{
+      width:300px;
+      height: 500px;
+      background: #000;
+      opacity: 0.9;
+      font-size: 15px;
+      font-family:"微軟正黑體";
+      color: #fff;
+      z-index: 11;
+      position: absolute;
+    }
+    .win span , .lose span{
+      width: 100px;
+      height: 20px;
+      position:absolute;
+      top: 200px;
+      left: 100px;
+    }
+    .time{
+      color: orange;
+      font-size: 50px;
+      position: absolute;
+      display: block;
+      left:40%;
+      top:10%;
+      z-index: 10;
+    }
+  </style>
+  <script type="text/javascript">
+    var $html = $('html');
+    var $body = $('body');
+    var clickNow = 0;
+    var xSpeed = 1;
+    var nowLevel = 1;
+    var flag = false;
+    var timetime = 25;
+
+    $(function(){
+      countdown();
+      $timer = setInterval(countdown,1000);
+      function countdown(){
+        timetime -=1;
+        $('.time').text(timetime);
+        if(timetime == 0 && nowLevel !=4){
+          $('.bg3').css("display","none");
+          $('.bg1').css("display","none");
+          $('.bg2').css("display","none");
+          $('.caractor').css("display","none");
+          $('.time').css("display","none");
+          clearInterval($timer);
+          $('.lose').css("display","block");
+        }
+      }
+
+
+
+      $html.click(function(){
+        var $bg1 = $(".bg1");
+        var $bg2 = $(".bg2");
+        var $bg3 = $(".bg3");
+        var offset1 = $bg1.position();
+        var offset2 = $bg2.position();
+        var offset3 = $bg3.position();
+        var clickAllGoal = 100;
+        var clickOneGoal = 30;
+        var clickTwoGoal = 60;
+        if(flag == false){
+          flag = true;
+          $('.runPos').css("display","block");
+          $('.stopPos').css("display","none");
+          if(nowLevel==1){
+            if(offset1.left <= -1200){
+              $bg1.css("left","0px");
+            }
+            $bg1.stop(true,true).animate({
+              left : "-=150"
+            },20000/60,"linear",function(){flag = false;$('.runPos').css("display","none");$('.stopPos').css("display","block");});
+          }
+          if(nowLevel==2){
+            if(offset2.left <= -1200){
+              $bg2.css("left","0px");
+            }
+            $bg2.stop(true,true).animate({
+              left : "-=150"
+            },20000/60,"linear",function(){flag = false;$('.runPos').css("display","none");$('.stopPos').css("display","block");});
+          }
+          if(nowLevel==3){
+            if(offset3.left <= -1200){
+              $bg3.css("left","0px");
+            }
+            $bg3.stop(true,true).animate({
+              left : "-=150"
+            },20000/60,"linear",function(){flag = false;$('.runPos').css("display","none");$('.stopPos').css("display","block");});
+          }
+        }else{
+        }
+        clickNow++;
+        if(nowLevel==1 && clickNow >= clickOneGoal){
+          nowLevel =2;
+        }
+        if(nowLevel==2 && clickNow >= clickTwoGoal){
+          nowLevel =3;
+        }
+        if(nowLevel==3 && clickNow >= clickAllGoal){
+          nowLevel =4;
+        }
+        if(nowLevel == 1){
+          $('.bg1').css("display","block");
+          $('.bg2').css("display","none");
+          $('.bg3').css("display","none");
+        }else if(nowLevel == 2){
+          $('.bg2').css("display","block");
+          $('.bg1').css("display","none");
+          $('.bg3').css("display","none");
+        }else if(nowLevel == 3){
+          $('.bg3').css("display","block");
+          $('.bg1').css("display","none");
+          $('.bg2').css("display","none");
+        }else if(nowLevel == 4){
+          $('.bg3').css("display","none");
+          $('.bg1').css("display","none");
+          $('.bg2').css("display","none");
+          $('.caractor').css("display","none");
+          $('.time').css("display","none");
+          clearInterval($timer);
+          $('.win').css("display","block");
+        }
+      });
+    });
+  </script>
+  <body>
+    <div class="game">
+      <div class="time">00</div>
+      <div class="win" style="display: none;"><span>恭喜您成功！</span></div>
+      <div class="lose" style="display: none;"><span>可惜失敗了！</span></div>
+      <div class="caractor">
+        <div class="runPos" style="display:none;"><img src="manrun.gif"></div>
+        <div class="stopPos"><img src="stop.png"></div>
+      </div>
+      <div class="bg">
+        <div class="bg1 bgbase"><img src="bg1.jpg"></div>
+        <div class="bg2 bgbase" style="display: none;"><img src="bg2.jpg"></div>
+        <div class="bg3 bgbase" style="display: none;"><img src="bg3.jpg"></div>
+      </div>
+    </div>
+  </body>
+</html>
